@@ -1,3 +1,6 @@
 [submodule "thirdparty/cmake-helper"]
 	path = thirdparty/cmake-helper
 	url = https://github.com/bx5a/cmake-helper.git
+[submodule "thirdparty/casablanca"]
+	path = thirdparty/casablanca
+	url = https://git.codeplex.com/casablanca
