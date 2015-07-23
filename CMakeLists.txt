@@ -42,8 +42,12 @@ set(BUILD_SAMPLES OFF CACHE BOOL "Build samples.")
 set(BUILD_SHARED_LIBS OFF CACHE BOOL "Build shared Libraries.")
 add_subdirectory(thirdparty/casablanca/Release)
 
+include_directories(./lizz)
+
 if (lizz_unit_test)
   add_subdirectory(thirdparty/googletest)
   include_directories(thirdparty/googletest/include)
   add_subdirectory(./tests)
 endif()
+
+add_subdirectory(./lizz)
