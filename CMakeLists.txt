@@ -6,6 +6,8 @@ if (APPLE)
   add_definitions(-std=c++11)
 endif()
 
+option(lizz_unit_test "Enable unit test targets" ON)
+
 add_subdirectory(thirdparty/cmake-helper)
 
 # Include Boost
@@ -32,4 +34,15 @@ FindOpenSSL(
 )
 
 # Include Casablanca using the provided CMakeLists.txt
+# Don't build tests and samples
+set(BUILD_TESTS OFF CACHE BOOL "Build tests.")
+set(BUILD_SAMPLES OFF CACHE BOOL "Build samples.")
+# Compile as static library
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "Build shared Libraries.")
 add_subdirectory(thirdparty/casablanca/Release)
+
+if (lizz_unit_test)
+  add_subdirectory(thirdparty/googletest)
+  include_directories(thirdparty/googletest/include)
+  add_subdirectory(./tests)
+endif()
