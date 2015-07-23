@@ -4,3 +4,6 @@
 [submodule "thirdparty/casablanca"]
 	path = thirdparty/casablanca
 	url = https://git.codeplex.com/casablanca
+[submodule "thirdparty/googletest"]
+	path = thirdparty/googletest
+	url = git@github.com:bx5a/googletest.git
