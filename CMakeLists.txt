@@ -22,6 +22,7 @@ FindBoost(
     thread
     regex
     filesystem
+    log
   STATIC
 )
 

@@ -8,6 +8,7 @@ add_library(lizz
 
   common/light_http_server.cc
   common/light_http_server.h
+  common/log.h
   common/error/conversion.cc
   common/error/conversion.h
 )
