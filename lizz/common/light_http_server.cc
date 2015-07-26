@@ -27,7 +27,7 @@ void LightHttpServer::Init(uint16_t port, std::error_code& err) {
   } catch (boost::system::system_error& exception) {
     FromBoostError(exception.code(), err);
     LOG(debug) << "Exception caught when initializing acceptor: "
-    << err.value() << " " << exception.what();
+               << err.value() << " " << exception.what();
     return;
   }
 }
@@ -109,7 +109,7 @@ void LightHttpServer::HandleHttpRequest(
                                            local_err);
     if (local_err) {
       LOG(debug) << "Server request handler failed: "
-      << local_err.value();
+                 << local_err.value();
       return;
     }
     std::vector<char> response(string_response.begin(),
