@@ -12,9 +12,10 @@ namespace spotify {
   
 class Client : public ClientInterface {
  public:
-  static std::shared_ptr<ClientInterface> Login(const std::string& username,
-                                                const std::string& password,
-                                                std::error_code& err);
+  static std::shared_ptr<ClientInterface> Login(
+      const std::string& username, const std::string& password,
+      const std::string& client_id,const std::string& client_secret,
+      std::error_code& err);
 };
   
 }  // namespace spotify

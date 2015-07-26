@@ -42,6 +42,7 @@ set(BUILD_SAMPLES OFF CACHE BOOL "Build samples.")
 # Compile as static library
 set(BUILD_SHARED_LIBS OFF CACHE BOOL "Build shared Libraries.")
 add_subdirectory(thirdparty/casablanca/Release)
+include_directories(thirdparty/casablanca/Release/include)
 
 include_directories(./lizz)
 
