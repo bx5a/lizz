@@ -1,24 +1,98 @@
 #include "spotify/client.h"
 
-// casablanca header
+#include <thread>
+#include <regex>
+
 #include <cpprest/http_client.h>
 
 #include "common/light_http_server.h"
+#include "common/log.h"
 
 namespace lizz {
 namespace spotify {
+
+Client::Client(std::string client_id,
+               std::string client_secret,
+               uint16_t redirect_uri_port):
+  client_id_(std::move(client_id)),
+  client_secret_(std::move(client_secret)),
+  redirect_uri_port_(std::move(redirect_uri_port)) {}
   
-std::shared_ptr<ClientInterface> Client::Login(
-    const std::string& username, const std::string& password,
-    const std::string& client_id,const std::string& client_secret,
-    std::error_code& err) {
+void Client::Login(LoginHandler login_handler,
+                   uint16_t timeout_seconds,
+                   std::error_code& err) {
+  // reset the code
+  code_ = "";
+  // lock mutex
+  std::mutex mutex;
+  mutex.lock();
   // start a server
+  LightHttpServer server;
+  server.Init(redirect_uri_port_, err);
+  if (err) {
+    return;
+  }
+  auto handler = [&mutex, this](std::string&& request_header,
+                                std::string&& request_content,
+                                std::error_code& err){
+    std::vector<std::string> splitted_header;
+    boost::split(splitted_header, request_header, boost::is_any_of("\r\n"));
+    
+    // looking for GET /?code=[code] HTTP/1.1
+    std::regex regex("(GET )(.*)(code=)(.*)( HTTP)(.*)");
+    std::cmatch result;
+    uint32_t header_index = 0;
+    bool found = false;
+    while (header_index < splitted_header.size() &&
+           !(found = std::regex_match(splitted_header[header_index].c_str(),
+                                      result,
+                                      regex))) {
+      header_index++;
+    }
+    if (found) {
+      LOG(debug) << "Code received: " << result[4];
+      code_ = result[4];
+    }
+    
+    // unlock mutex to sync
+    mutex.unlock();
+    return "HTTP/1.1 200 OK\r\n\r\n";
+  };
+  server.SetHandler(handler);
+  server.Start();
   
-  // query the login URL
+  // Create the login URL
+  utility::string_t redirect_uri("http://localhost:" +
+                                 std::to_string(redirect_uri_port_));
+  web::http::uri_builder auth_url("https://accounts.spotify.com/authorize");
+  auth_url.append_query("client_id", client_id_);
+  auth_url.append_query("response_type", "code");
+  auth_url.append_query("redirect_uri", redirect_uri);
   
-  // post username & password
+  // query it using the handler
+  login_handler(auth_url.to_string());
   
-  return std::make_shared<Client>();
+  // lock mutex or timeout
+  auto timeout = std::chrono::seconds(timeout_seconds);
+  auto waited = std::chrono::milliseconds(0);
+  bool is_sync = false;
+  while (timeout > waited && !(is_sync = mutex.try_lock())) {
+    auto sleep_time = std::chrono::milliseconds(50);
+    std::this_thread::sleep_for(sleep_time);
+    waited += sleep_time;
+  }
+  
+  mutex.unlock();
+  if (!is_sync) {
+    err = std::make_error_code(std::errc::timed_out);
+    return;
+  }
+  
+  // if code_ is still empty, it means the message received bad the server was
+  // baddly formatted
+  if (code_.empty()) {
+    err = std::make_error_code(std::errc::bad_message);
+  }
 }
   
 }  // namespace spotify

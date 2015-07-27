@@ -4,6 +4,8 @@
 #include <string>
 #include <memory>
 #include <system_error>
+#include <cstdint>
+#include <functional>
 
 #include "client_interface.h"
 
@@ -12,10 +14,19 @@ namespace spotify {
   
 class Client : public ClientInterface {
  public:
-  static std::shared_ptr<ClientInterface> Login(
-      const std::string& username, const std::string& password,
-      const std::string& client_id,const std::string& client_secret,
-      std::error_code& err);
+  using LoginHandler = std::function<void(const std::string& url)>;
+  
+  Client(std::string client_id,
+         std::string client_secret,
+         uint16_t redirect_uri_port);
+  
+  void Login(LoginHandler login_handler,
+             uint16_t timeout_seconds,
+             std::error_code& err);
+  
+ private:
+  std::string client_id_, client_secret_, code_;
+  uint16_t redirect_uri_port_;
 };
   
 }  // namespace spotify
