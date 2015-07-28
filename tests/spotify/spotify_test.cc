@@ -6,6 +6,7 @@
 #include <QString>
 #include <QApplication>
 
+// TODO(bx5a): Use boost::python and selenium to automate that test
 TEST(SpotifyTest, Login) {
   //Init Qt application
   int argc = 0;
@@ -25,6 +26,24 @@ TEST(SpotifyTest, Login) {
     QDesktopServices::openUrl(url);
   };
   
-  client.Login(login_handler, 60, err);
+  auto login_completion_handler = [](const std::error_code& err) {
+    EXPECT_FALSE(err);
+    
+    const std::string close_webpage_script = R"html_code(
+          <script language="javascript" type="text/javascript">
+            window.close();
+          </script>
+        )html_code";
+
+    
+    std::string header_code =
+        "HTTP/1.1 200 OK\r\n"
+        "Content-Length=" + std::to_string(close_webpage_script.size()) + "\r\n"
+        "\r\n\r\n";
+    
+    return header_code + close_webpage_script;
+  };
+  
+  client.Login(login_handler, login_completion_handler, 60, err);
   EXPECT_FALSE(err);
 }

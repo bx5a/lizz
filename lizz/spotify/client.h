@@ -14,13 +14,45 @@ namespace spotify {
   
 class Client : public ClientInterface {
  public:
+  /**
+   * login handler
+   * Using the url, it defines how to handle a login action.
+   * A common way is to open the address in a browser and follow the steps
+   *
+   * @param: url is the address of the authorization page.
+   */
   using LoginHandler = std::function<void(const std::string& url)>;
+  
+  /**
+   * login completion handler
+   * Notifies any error during the login process and gives the reponse to be 
+   * sent.
+   * An definition should look like:
+   *
+   * auto login_completion_handler = [](const std::error_code& err) {
+   *   if (err) {
+   *     return "HTTP/1.1 500 Internal Server Error\r\n\r\n";
+   *   }
+   *   return "HTTP/1.1 200 OK\r\n\r\n";
+   * }
+   *
+   * @param: err the error obtained
+   */
+  using LoginCompletionHandler =
+      std::function<std::string(const std::error_code& error)>;
+  
   
   Client(std::string client_id,
          std::string client_secret,
          uint16_t redirect_uri_port);
   
+  /**
+   * @brief Logs the user to the server
+   *
+   * @login_handler
+   */
   void Login(LoginHandler login_handler,
+             LoginCompletionHandler completion_handler,
              uint16_t timeout_seconds,
              std::error_code& err);
   

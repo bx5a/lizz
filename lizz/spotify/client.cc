@@ -19,6 +19,7 @@ Client::Client(std::string client_id,
   redirect_uri_port_(std::move(redirect_uri_port)) {}
   
 void Client::Login(LoginHandler login_handler,
+                   LoginCompletionHandler completion_handler,
                    uint16_t timeout_seconds,
                    std::error_code& err) {
   // reset the code
@@ -32,9 +33,10 @@ void Client::Login(LoginHandler login_handler,
   if (err) {
     return;
   }
-  auto handler = [&mutex, this](std::string&& request_header,
-                                std::string&& request_content,
-                                std::error_code& err){
+  auto handler = [&mutex, completion_handler, this](
+      std::string&& request_header, std::string&& request_content,
+      std::error_code& err){
+    
     std::vector<std::string> splitted_header;
     boost::split(splitted_header, request_header, boost::is_any_of("\r\n"));
     
@@ -52,11 +54,14 @@ void Client::Login(LoginHandler login_handler,
     if (found) {
       LOG(debug) << "Code received: " << result[4];
       code_ = result[4];
+    } else {
+      err = std::make_error_code(std::errc::bad_message);
     }
     
     // unlock mutex to sync
     mutex.unlock();
-    return "HTTP/1.1 200 OK\r\n\r\n";
+    
+    return completion_handler(err);
   };
   server.SetHandler(handler);
   server.Start();
