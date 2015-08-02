@@ -53,25 +53,73 @@ std::shared_ptr<lizz::spotify::Client> Login() {
   return p_client;
 }
 
+TEST(SpotifyTest, Login) {
+  auto p_client = Login();
+  std::string type, token;
+  std::error_code err;
+  static_cast<lizz::spotify::Client*>(p_client.get())->QueryAccessToken(&type, &token, err);
+  ASSERT_FALSE(err);
+  static_cast<lizz::spotify::Client*>(p_client.get())->QueryAccessToken(&type, &token, err);
+  ASSERT_FALSE(err);
+  static_cast<lizz::spotify::Client*>(p_client.get())->QueryAccessToken(&type, &token, err);
+  ASSERT_FALSE(err);
+}
+
+
 TEST(SpotifyTest, Search) {
   auto p_client = Login();
   auto p_search_engine = p_client->GetSearchEngine();
-  auto result = p_search_engine->Run("The who", 2, 0, 0, 0);
-  result.Wait();
+  {
+    auto result = p_search_engine->Run("The who", 2, 0, 0, 0);
+    result.Wait();
   
-  EXPECT_FALSE(result.GetError());
-  EXPECT_EQ(result.Get().GetTracks().size(), 2);
+    EXPECT_FALSE(result.GetError());
+    EXPECT_EQ(result.Get().GetTracks().size(), 2);
+  }
+  
+  {
+    auto result = p_search_engine->Run("The who", 0, 2, 0, 0);
+    result.Wait();
+    
+    EXPECT_FALSE(result.GetError());
+    EXPECT_EQ(result.Get().GetAlbums().size(), 2);
+  }
+  
+  {
+    auto result = p_search_engine->Run("The who", 0, 0, 2, 0);
+    result.Wait();
+    
+    EXPECT_FALSE(result.GetError());
+    EXPECT_EQ(result.Get().GetArtists().size(), 2);
+  }
+  
+  {
+    auto result = p_search_engine->Run("The who", 0, 0, 0, 2);
+    result.Wait();
+    
+    EXPECT_FALSE(result.GetError());
+    EXPECT_EQ(result.Get().GetPlaylists().size(), 2);
+  }
+  {
+    auto result = p_search_engine->Run("The who", 1, 2, 3, 4);
+    result.Wait();
+    
+    EXPECT_FALSE(result.GetError());
+    EXPECT_EQ(result.Get().GetTracks().size(), 1);
+    EXPECT_EQ(result.Get().GetAlbums().size(), 2);
+    EXPECT_EQ(result.Get().GetArtists().size(), 3);
+    EXPECT_EQ(result.Get().GetPlaylists().size(), 4);
+  }
 }
 
 TEST(SpotifyTest, Track) {
-  
   auto p_client = Login();
   auto p_search_engine = p_client->GetSearchEngine();
   auto result = p_search_engine->Run("The who", 1, 0, 0, 0);
   result.Wait();
   
   EXPECT_FALSE(result.GetError());
-  EXPECT_EQ(result.Get().GetTracks().size(), 1);
+  ASSERT_EQ(result.Get().GetTracks().size(), 1);
   
   std::shared_ptr<lizz::TrackInterface> track_ptr = *(result.Get().GetTracks().begin());
   auto p_track = static_cast<lizz::spotify::Track*>(track_ptr.get());

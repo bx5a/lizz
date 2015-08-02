@@ -18,6 +18,9 @@ namespace lizz {
 namespace spotify {
 class Track : public TrackInterface {
  public:
+  static constexpr const char* kTypeName = "track";
+  static constexpr const char* kPathInJson = "tracks.items";
+  
   Track(const boost::property_tree::ptree& track_info);
   
 //  std::shared_ptr<AlbumInterface> GetAlbum(std::error_code& err) const;

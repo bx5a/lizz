@@ -3,7 +3,7 @@
 
 namespace lizz {
 namespace spotify {
-
+  
 Track::Track(const boost::property_tree::ptree& track_info)
   : track_info_(track_info) {}
 
