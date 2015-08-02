@@ -19,7 +19,8 @@ Client::Client(std::string client_id,
                uint16_t redirect_uri_port):
   client_id_(std::move(client_id)),
   client_secret_(std::move(client_secret)),
-  redirect_uri_port_(std::move(redirect_uri_port)) {}
+  redirect_uri_port_(std::move(redirect_uri_port)),
+  refresh_token_("") {}
   
 void Client::Login(LoginHandler login_handler,
                    LoginCompletionHandler completion_handler,
@@ -111,11 +112,22 @@ void Client::QueryAccessToken(std::string* p_token_type,
   web::http::client::http_client auth_client(
       "https://accounts.spotify.com/api/token");
     
-  std::string request_data = "grant_type=authorization_code&code=" + code_
-      + "&redirect_uri=http://localhost:" + std::to_string(redirect_uri_port_)
-      + "&client_id=" + client_id_
-      + "&client_secret=" + client_secret_;
-    
+  std::string request_data;
+  // If we haven't got any refresh token, it means it the first query. We do an
+  // authorization_code
+  // else it means it's not the first query. We can do a refresh_token
+  if (refresh_token_.empty()) {
+    request_data= "grant_type=authorization_code&code=" + code_
+                  + "&redirect_uri=http://localhost:"
+                  + std::to_string(redirect_uri_port_)
+                  + "&client_id=" + client_id_
+                  + "&client_secret=" + client_secret_;
+  } else {
+    request_data= "grant_type=refresh_token&refresh_token=" + refresh_token_
+                  + "&client_id=" + client_id_
+                  + "&client_secret=" + client_secret_;
+  }
+  
   auth_client.request(web::http::methods::POST,
                       "",
                       request_data,
@@ -124,12 +136,20 @@ void Client::QueryAccessToken(std::string* p_token_type,
   .then([](web::http::http_response response){
     return response.extract_json();
   })
-    
+  
   .then([&access_token_json](web::json::value json_value) {
     access_token_json = json_value;
   })
-    
+  
   .wait();
+  
+  // Get refresh token if any
+  if (access_token_json.has_field("refresh_token") &&
+      access_token_json["refresh_token"].is_string()) {
+    refresh_token_ = access_token_json["refresh_token"].serialize();
+    // serialize add a \" char at the begining and end
+    RemoveFirstAndLastCharacters(&refresh_token_, '\"');
+  }
   
   if (access_token_json.has_field("token_type") &&
       access_token_json.has_field("access_token") &&

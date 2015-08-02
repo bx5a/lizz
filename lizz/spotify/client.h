@@ -65,6 +65,7 @@ class Client : public ClientInterface, public std::enable_shared_from_this<Clien
  private:
   std::string client_id_, client_secret_, code_;
   uint16_t redirect_uri_port_;
+  std::string refresh_token_;
 };
   
 }  // namespace spotify
