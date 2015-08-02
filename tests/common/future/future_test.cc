@@ -43,5 +43,4 @@ TEST(FutureTest, PplxTask) {
   future.Wait();
   ASSERT_TRUE(future.GetError());
   ASSERT_EQ(future.Get(), 0);
-  
 }
