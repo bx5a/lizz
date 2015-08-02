@@ -55,8 +55,9 @@ std::shared_ptr<lizz::spotify::Client> Login() {
 TEST(SpotifyTest, Search) {
   auto p_client = Login();
   auto p_search_engine = p_client->GetSearchEngine();
-  auto result = p_search_engine->Run("The who", 0, 0, 1, 0);
+  auto result = p_search_engine->Run("The who", 2, 0, 0, 0);
   result.Wait();
   
   EXPECT_FALSE(result.GetError());
+  EXPECT_EQ(result.Get().GetTracks().size(), 2);
 }
