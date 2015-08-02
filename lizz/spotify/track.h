@@ -31,7 +31,7 @@ class Track : public TrackInterface {
   // GetExternalUrls
   std::string GetHref(std::error_code& err) const;
   std::string GetId(std::error_code& err) const;
-  bool GetIsPlayable(std::error_code& err) const;
+  // GetIsPlayable
   // GetIsLinkedFrom
   std::string GetName(std::error_code& err) const;
   uint8_t GetPopularity(std::error_code& err) const;
@@ -40,6 +40,15 @@ class Track : public TrackInterface {
   std::string GetUri(std::error_code& err) const;
 
 private:
+  template <typename T>
+  T Get(const std::string& key, std::error_code& err) const {
+    auto res = track_info_.get_optional<T>(key);
+    if (!res) {
+      err = std::make_error_code(std::errc::invalid_seek);
+    }
+    return res.get();
+  }
+  
   boost::property_tree::ptree track_info_;
 };
 }  // namespace spotify

@@ -87,6 +87,8 @@ std::list<std::shared_ptr<TrackInterface>>
   })
     
   .then([&err, &res](utility::string_t response) {
+    std::cout<<response<<std::endl;
+    
     boost::property_tree::ptree tree;
     try {
       std::stringstream ss;

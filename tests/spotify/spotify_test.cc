@@ -6,6 +6,7 @@
 #include <QApplication>
 
 #include "spotify/client.h"
+#include "spotify/track.h"
 #include "search_engine_interface.h"
 
 // TODO(bx5a): Use boost::python and selenium to automate that test
@@ -60,4 +61,35 @@ TEST(SpotifyTest, Search) {
   
   EXPECT_FALSE(result.GetError());
   EXPECT_EQ(result.Get().GetTracks().size(), 2);
+}
+
+TEST(SpotifyTest, Track) {
+  
+  auto p_client = Login();
+  auto p_search_engine = p_client->GetSearchEngine();
+  auto result = p_search_engine->Run("The who", 1, 0, 0, 0);
+  result.Wait();
+  
+  EXPECT_FALSE(result.GetError());
+  EXPECT_EQ(result.Get().GetTracks().size(), 1);
+  
+  std::shared_ptr<lizz::TrackInterface> track_ptr = *(result.Get().GetTracks().begin());
+  auto p_track = static_cast<lizz::spotify::Track*>(track_ptr.get());
+  
+  std::error_code err;
+  
+  auto markets = p_track->GetAvailableMarkets(err);
+  EXPECT_EQ(markets.size(), 2);
+  EXPECT_EQ(*(markets.begin()), "DK");
+  
+  EXPECT_EQ(p_track->GetDiscNumber(err), 1);
+  EXPECT_EQ(p_track->GetDuration(err), std::chrono::milliseconds(242186));
+  EXPECT_FALSE(p_track->GetExplicit(err));
+  EXPECT_EQ(p_track->GetHref(err), "https://api.spotify.com/v1/tracks/4jGEwDE6F6ERJ3BxAZ03sU");
+  EXPECT_EQ(p_track->GetId(err), "4jGEwDE6F6ERJ3BxAZ03sU");
+  EXPECT_EQ(p_track->GetPopularity(err), 0);
+  EXPECT_EQ(p_track->GetTrackNumber(err), 105);
+  EXPECT_EQ(p_track->GetUri(err), "spotify:track:4jGEwDE6F6ERJ3BxAZ03sU");
+  
+  EXPECT_EQ(track_ptr->GetName(err), "I Wanna Dance With Somebody (Who Loves Me) (Glee Cast Version)");
 }

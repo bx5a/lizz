@@ -16,16 +16,20 @@ void SearchResult::Add(std::shared_ptr<PlaylistInterface> ptr) {
 }
     
 // TODO(bx5a): give a Get() templatized function
-const std::list<std::shared_ptr<TrackInterface>>&& SearchResult::GetTracks() const {
+const std::list<std::shared_ptr<TrackInterface>>&&
+    SearchResult::GetTracks() const {
   return std::move(track_list_);
 }
-const std::list<std::shared_ptr<AlbumInterface>>&& SearchResult::GetAlbums() const {
+const std::list<std::shared_ptr<AlbumInterface>>&&
+    SearchResult::GetAlbums() const {
   return std::move(album_list_);
 }
-const std::list<std::shared_ptr<ArtistInterface>>&& SearchResult::GetArtists() const {
+const std::list<std::shared_ptr<ArtistInterface>>&&
+    SearchResult::GetArtists() const {
   return std::move(artist_list_);
 }
-const std::list<std::shared_ptr<PlaylistInterface>>&& SearchResult::GetPlaylists() const {
+const std::list<std::shared_ptr<PlaylistInterface>>&&
+    SearchResult::GetPlaylists() const {
   return std::move(playlist_list_);
 }
   
