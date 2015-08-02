@@ -18,8 +18,13 @@ class Future {
 };
   
 template <class T>
-using ResultType = typename std::result_of<decltype(&T::get)(T)>::type;
-  
+  using ResultType = typename std::remove_cv<
+                       typename std::remove_reference<
+                         typename std::result_of<
+                           decltype(&T::get)(T)
+                         >::type
+                       >::type
+                     >::type;
 }  // namespace priv
   
 
@@ -36,14 +41,11 @@ private:
   std::shared_ptr<priv::Future<T>> p_future_;
 };
   
-// Define a "generic" future. That works for both std::future and casablanca's
-// pplx::task
+// Define a "generic" future. That works for both std::shared_future and
+// casablanca's pplx::task
 template <class T>
 class GenericFuture : public priv::Future<priv::ResultType<T>> {
  public:
-  GenericFuture(std::shared_ptr<T> p_future_t) :
-    p_future_t_(p_future_t), is_init_(false) {}
-  
   GenericFuture(
       std::function<std::shared_ptr<T>(std::error_code&)> create_future) {
     p_future_t_ = create_future(ref(err_));
@@ -55,13 +57,7 @@ class GenericFuture : public priv::Future<priv::ResultType<T>> {
   
   priv::ResultType<T> Get() {
     try {
-      // TODO(bx5a): search the doc why you can't do std::future.get() several
-      // times
-      if (!is_init_) {
-        output_ = p_future_t_->get();
-      }
-      is_init_ = true;
-      return output_;
+      return p_future_t_->get();
     } catch (const std::exception& e) {
       // TODO(bx5a): create a more explicit error
       // TODO(bx5a): maybe Get should return an error instead of reporting it
@@ -77,7 +73,6 @@ class GenericFuture : public priv::Future<priv::ResultType<T>> {
   
  private:
   std::shared_ptr<T> p_future_t_;
-  priv::ResultType<T> output_;
   bool is_init_;
   std::error_code err_;
 };

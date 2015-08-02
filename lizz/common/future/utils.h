@@ -17,7 +17,7 @@ template<class ReturnType>
 Future<ReturnType> make_std_future(std::function<ReturnType(std::error_code&)> fn) {
   
   auto create_future = [&fn](std::error_code& err){
-    return std::make_shared<std::future<ReturnType>>(
+    return std::make_shared<std::shared_future<ReturnType>>(
                std::async(
                    std::launch::async,
                    std::bind(fn, ref(err))
@@ -26,7 +26,7 @@ Future<ReturnType> make_std_future(std::function<ReturnType(std::error_code&)> f
   };
   
   auto p_generic_task =
-      std::make_shared<GenericFuture<std::future<ReturnType>>>(create_future);
+      std::make_shared<GenericFuture<std::shared_future<ReturnType>>>(create_future);
   
   return Future<ReturnType>(p_generic_task);
 }
