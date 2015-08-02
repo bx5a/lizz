@@ -5,8 +5,10 @@
 
 #include <cpprest/http_client.h>
 
-#include "common/light_http_server.h"
+#include "spotify/search_engine.h"
+
 #include "common/log.h"
+#include "common/light_http_server.h"
 
 namespace lizz {
 namespace spotify {
@@ -97,7 +99,50 @@ void Client::Login(LoginHandler login_handler,
   // baddly formatted
   if (code_.empty()) {
     err = std::make_error_code(std::errc::bad_message);
+    return;
   }
+}
+  
+void Client::QueryAccessToken(std::string* p_token_type,
+                              std::string* p_access_token,
+                              std::error_code &err) {
+  web::json::value access_token_json;
+  web::http::client::http_client auth_client(
+      "https://accounts.spotify.com/api/token");
+    
+  std::string request_data = "grant_type=authorization_code&code=" + code_
+      + "&redirect_uri=http://localhost:" + std::to_string(redirect_uri_port_)
+      + "&client_id=" + client_id_
+      + "&client_secret=" + client_secret_;
+    
+  auth_client.request(web::http::methods::POST,
+                      "",
+                      request_data,
+                      "application/x-www-form-urlencoded")
+  
+  .then([](web::http::http_response response){
+    return response.extract_json();
+  })
+    
+  .then([&access_token_json](web::json::value json_value) {
+    access_token_json = json_value;
+  })
+    
+  .wait();
+  
+  if (access_token_json.has_field("token_type") &&
+      access_token_json.has_field("access_token") &&
+      access_token_json["token_type"].is_string() &&
+      access_token_json["access_token"].is_string()) {
+    *p_token_type = access_token_json["token_type"].serialize();
+    *p_access_token = access_token_json["access_token"].serialize();
+  } else {
+    err = std::make_error_code(std::errc::bad_message);
+  }
+}
+  
+std::shared_ptr<SearchEngineInterface> Client::GetSearchEngine() {
+  return std::make_shared<spotify::SearchEngine>(shared_from_this());
 }
   
 }  // namespace spotify

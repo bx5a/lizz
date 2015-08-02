@@ -12,7 +12,7 @@
 namespace lizz {
 namespace spotify {
   
-class Client : public ClientInterface {
+class Client : public ClientInterface, public std::enable_shared_from_this<Client> {
  public:
   /**
    * login handler
@@ -55,6 +55,12 @@ class Client : public ClientInterface {
              LoginCompletionHandler completion_handler,
              uint16_t timeout_seconds,
              std::error_code& err);
+  
+  std::shared_ptr<SearchEngineInterface> GetSearchEngine();
+  
+  void QueryAccessToken(std::string* p_token_type,
+                        std::string* p_access_token,
+                        std::error_code& err);
   
  private:
   std::string client_id_, client_secret_, code_;

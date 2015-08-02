@@ -8,3 +8,5 @@ target_link_libraries(light_http_server_test
   gtest_main
   lizz
 )
+
+add_subdirectory(future)
