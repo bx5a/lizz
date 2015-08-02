@@ -9,6 +9,7 @@
 
 #include "common/log.h"
 #include "common/light_http_server.h"
+#include "common/string.h"
 
 namespace lizz {
 namespace spotify {
@@ -136,6 +137,9 @@ void Client::QueryAccessToken(std::string* p_token_type,
       access_token_json["access_token"].is_string()) {
     *p_token_type = access_token_json["token_type"].serialize();
     *p_access_token = access_token_json["access_token"].serialize();
+    // serialize add a \" char at the begining and end
+    RemoveFirstAndLastCharacters(p_token_type, '\"');
+    RemoveFirstAndLastCharacters(p_access_token, '\"');
   } else {
     err = std::make_error_code(std::errc::bad_message);
   }
