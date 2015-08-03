@@ -12,7 +12,6 @@
 #include "search_engine_interface.h"
 
 namespace lizz {
-class TrackInterface;
 namespace spotify {
 class Client;
 class SearchEngine : public SearchEngineInterface {

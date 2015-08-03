@@ -46,6 +46,9 @@ AddTarget(
     common/future.h
     common/future/utils.h
 
+    # Common Utils 
+    common/utils/property_tree.h
+
   LINK
     cpprest
     ${Boost_LIBRARIES}

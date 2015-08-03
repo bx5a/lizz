@@ -54,14 +54,21 @@ std::shared_ptr<lizz::spotify::Client> Login() {
 }
 
 TEST(SpotifyTest, Login) {
+  // TODO(bx5a): test parallel access to token
   auto p_client = Login();
   std::string type, token;
   std::error_code err;
-  static_cast<lizz::spotify::Client*>(p_client.get())->QueryAccessToken(&type, &token, err);
+  static_cast<lizz::spotify::Client*>(p_client.get())->QueryAccessToken(&type,
+                                                                        &token,
+                                                                        err);
   ASSERT_FALSE(err);
-  static_cast<lizz::spotify::Client*>(p_client.get())->QueryAccessToken(&type, &token, err);
+  static_cast<lizz::spotify::Client*>(p_client.get())->QueryAccessToken(&type,
+                                                                        &token,
+                                                                        err);
   ASSERT_FALSE(err);
-  static_cast<lizz::spotify::Client*>(p_client.get())->QueryAccessToken(&type, &token, err);
+  static_cast<lizz::spotify::Client*>(p_client.get())->QueryAccessToken(&type,
+                                                                        &token,
+                                                                        err);
   ASSERT_FALSE(err);
 }
 
@@ -126,18 +133,20 @@ TEST(SpotifyTest, Track) {
   
   std::error_code err;
   
+  // Spotify specific
   auto markets = p_track->GetAvailableMarkets(err);
   EXPECT_EQ(markets.size(), 2);
   EXPECT_EQ(*(markets.begin()), "DK");
-  
-  EXPECT_EQ(p_track->GetDiscNumber(err), 1);
-  EXPECT_EQ(p_track->GetDuration(err), std::chrono::milliseconds(242186));
   EXPECT_FALSE(p_track->GetExplicit(err));
+  EXPECT_EQ(p_track->GetDiscNumber(err), 1);
   EXPECT_EQ(p_track->GetHref(err), "https://api.spotify.com/v1/tracks/4jGEwDE6F6ERJ3BxAZ03sU");
   EXPECT_EQ(p_track->GetId(err), "4jGEwDE6F6ERJ3BxAZ03sU");
   EXPECT_EQ(p_track->GetPopularity(err), 0);
-  EXPECT_EQ(p_track->GetTrackNumber(err), 105);
   EXPECT_EQ(p_track->GetUri(err), "spotify:track:4jGEwDE6F6ERJ3BxAZ03sU");
   
+  // global
+  EXPECT_EQ(track_ptr->GetTrackNumber(err), 105);
+  EXPECT_EQ(track_ptr->GetDuration(err), std::chrono::milliseconds(242186));
+  EXPECT_EQ(track_ptr->GetArtists(err).size(), 1);
   EXPECT_EQ(track_ptr->GetName(err), "I Wanna Dance With Somebody (Who Loves Me) (Glee Cast Version)");
 }

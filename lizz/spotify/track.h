@@ -1,11 +1,6 @@
 #ifndef LIZZ_SPOTIFY_TRACK_H_
 #define LIZZ_SPOTIFY_TRACK_H_
 
-#include <system_error>
-#include <list>
-#include <memory>
-#include <chrono>
-
 #include <boost/property_tree/ptree.hpp>
 
 #include "track_interface.h"
@@ -23,9 +18,9 @@ class Track : public TrackInterface {
   
   Track(const boost::property_tree::ptree& track_info);
   
-//  std::shared_ptr<AlbumInterface> GetAlbum(std::error_code& err) const;
-//  std::list<std::shared_ptr<ArtistInterface>>
-//      GetArtists(std::error_code& err) const;
+  std::shared_ptr<AlbumInterface> GetAlbum(std::error_code& err) const;
+  std::list<std::shared_ptr<ArtistInterface>>
+      GetArtists(std::error_code& err) const;
   std::list<std::string> GetAvailableMarkets(std::error_code& err) const;
   int GetDiscNumber(std::error_code& err) const;
   std::chrono::milliseconds GetDuration(std::error_code& err) const;
@@ -43,15 +38,6 @@ class Track : public TrackInterface {
   std::string GetUri(std::error_code& err) const;
 
 private:
-  template <typename T>
-  T Get(const std::string& key, std::error_code& err) const {
-    auto res = track_info_.get_optional<T>(key);
-    if (!res) {
-      err = std::make_error_code(std::errc::invalid_seek);
-    }
-    return res.get();
-  }
-  
   boost::property_tree::ptree track_info_;
 };
 }  // namespace spotify
