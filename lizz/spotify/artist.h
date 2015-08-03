@@ -7,7 +7,7 @@
 
 #include <boost/property_tree/ptree.hpp>
 
-#include "artist_interface.h"
+#include "interfaces/artist_interface.h"
 
 namespace lizz {
 namespace spotify {

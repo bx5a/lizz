@@ -9,7 +9,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 
-#include "search_engine_interface.h"
+#include "interfaces/search_engine_interface.h"
 
 namespace lizz {
 namespace spotify {

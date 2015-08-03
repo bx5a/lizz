@@ -8,7 +8,7 @@
 
 #include <boost/property_tree/ptree.hpp>
 
-#include "playlist_interface.h"
+#include "interfaces/playlist_interface.h"
 
 namespace lizz {
 class TrackInterface;

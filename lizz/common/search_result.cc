@@ -1,5 +1,10 @@
 #include "common/search_result.h"
 
+#include "interfaces/track_interface.h"
+#include "interfaces/album_interface.h"
+#include "interfaces/artist_interface.h"
+#include "interfaces/playlist_interface.h"
+
 namespace lizz {
   
 void SearchResult::Add(std::shared_ptr<TrackInterface> ptr) {

@@ -2,6 +2,7 @@
 
 #include "common/log.h"
 #include "common/future/utils.h"
+
 #include "spotify/client.h"
 #include "spotify/track.h"
 #include "spotify/album.h"

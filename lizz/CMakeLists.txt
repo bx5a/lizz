@@ -8,12 +8,12 @@ AddTarget(
 
   SOURCES
     # Interfaces
-    client_interface.h
-    search_engine_interface.h
-    track_interface.h
-    album_interface.h
-    artist_interface.h
-    playlist_interface.h
+    interfaces/client_interface.h
+    interfaces/search_engine_interface.h
+    interfaces/track_interface.h
+    interfaces/album_interface.h
+    interfaces/artist_interface.h
+    interfaces/playlist_interface.h
 
     # Spotify
     spotify/client.cc

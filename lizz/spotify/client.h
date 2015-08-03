@@ -7,7 +7,7 @@
 #include <cstdint>
 #include <functional>
 
-#include "client_interface.h"
+#include "interfaces/client_interface.h"
 
 namespace lizz {
 namespace spotify {

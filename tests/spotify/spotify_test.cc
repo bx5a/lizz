@@ -7,7 +7,7 @@
 
 #include "spotify/client.h"
 #include "spotify/track.h"
-#include "search_engine_interface.h"
+#include "interfaces/search_engine_interface.h"
 
 // TODO(bx5a): Use boost::python and selenium to automate that test
 

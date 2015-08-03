@@ -2,6 +2,9 @@
 #include "spotify/album.h"
 #include "spotify/artist.h"
 
+#include "interfaces/album_interface.h"
+#include "interfaces/artist_interface.h"
+
 #include "common/utils/property_tree.h"
 
 namespace lizz {

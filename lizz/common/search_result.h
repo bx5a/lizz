@@ -2,13 +2,12 @@
 #define LIZZ_COMMON_SEARCH_RESULT_H_
 
 #include <list>
-#include "track_interface.h"
-#include "album_interface.h"
-#include "artist_interface.h"
-#include "playlist_interface.h"
 
 namespace lizz {
-  
+class TrackInterface;
+class AlbumInterface;
+class ArtistInterface;
+class PlaylistInterface;
 class SearchResult {
  public:
   void Add(std::shared_ptr<TrackInterface> ptr);

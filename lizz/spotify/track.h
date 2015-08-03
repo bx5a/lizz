@@ -3,13 +3,13 @@
 
 #include <boost/property_tree/ptree.hpp>
 
-#include "track_interface.h"
-#include "album_interface.h"
-#include "artist_interface.h"
+#include "interfaces/track_interface.h"
 
 // Interface obtained from
 // https://developer.spotify.com/web-api/object-model/
 namespace lizz {
+class AlbumInterface;
+class ArtistInterface;
 namespace spotify {
 class Track : public TrackInterface {
  public:
