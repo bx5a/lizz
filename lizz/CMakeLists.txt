@@ -34,9 +34,6 @@ AddTarget(
     common/search_result.h
     common/light_http_server.cc
     common/light_http_server.h
-    common/log.h
-    common/string.h
-    common/string.cc
 
     # Common Error
     common/error/conversion.cc
@@ -48,6 +45,9 @@ AddTarget(
 
     # Common Utils 
     common/utils/property_tree.h
+    common/utils/log.h
+    common/utils/string.h
+    common/utils/string.cc
 
   LINK
     cpprest

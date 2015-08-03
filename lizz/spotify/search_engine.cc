@@ -1,6 +1,6 @@
 #include "spotify/search_engine.h"
 
-#include "common/log.h"
+#include "common/utils/log.h"
 #include "common/future/utils.h"
 
 #include "spotify/client.h"

@@ -4,7 +4,7 @@
 #include <boost/regex.hpp>
 #include <boost/lexical_cast.hpp>
 
-#include "common/log.h"
+#include "common/utils/log.h"
 #include "common/error/conversion.h"
 
 namespace lizz {
