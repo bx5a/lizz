@@ -11,18 +11,20 @@ namespace lizz {
 class AlbumInterface;
 class ArtistInterface;
 namespace spotify {
+class Object;
 class Track : public TrackInterface {
  public:
   static constexpr const char* kTypeName = "track";
   static constexpr const char* kPathInJson = "tracks.items";
   
   Track(const boost::property_tree::ptree& track_info);
+  Track(std::shared_ptr<Object> p_obj);
   
   std::shared_ptr<AlbumInterface> GetAlbum(std::error_code& err) const;
   std::list<std::shared_ptr<ArtistInterface>>
       GetArtists(std::error_code& err) const;
   std::list<std::string> GetAvailableMarkets(std::error_code& err) const;
-  int GetDiscNumber(std::error_code& err) const;
+  uint8_t GetDiscNumber(std::error_code& err) const;
   std::chrono::milliseconds GetDuration(std::error_code& err) const;
   bool GetExplicit(std::error_code& err) const;
   // GetExternalIds
@@ -38,7 +40,7 @@ class Track : public TrackInterface {
   std::string GetUri(std::error_code& err) const;
 
 private:
-  boost::property_tree::ptree track_info_;
+  std::shared_ptr<Object> p_object_;
 };
 }  // namespace spotify
 }  // namespace lizz

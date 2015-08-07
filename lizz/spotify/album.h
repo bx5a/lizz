@@ -1,12 +1,15 @@
 #ifndef LIZZ_SPOTIFY_ALBUM_H_
 #define LIZZ_SPOTIFY_ALBUM_H_
 
-#include <boost/property_tree/ptree.hpp>
+#include <memory>
+
+#include <boost/property_tree/ptree_fwd.hpp>
 
 #include "interfaces/album_interface.h"
 
 namespace lizz {
 namespace spotify {
+class Object;
   
 class Album : public AlbumInterface {
  public:
@@ -14,6 +17,7 @@ class Album : public AlbumInterface {
   static constexpr const char* kPathInJson = "albums.items";
   
   Album(const boost::property_tree::ptree& album_info);
+  Album(std::shared_ptr<Object> p_obj);
   
   std::string GetAlbumType(std::error_code& err) const;
   std::list<std::shared_ptr<ArtistInterface>>
@@ -37,7 +41,7 @@ class Album : public AlbumInterface {
   std::string GetUri(std::error_code& err) const;
   
  private:
-  boost::property_tree::ptree album_info_;
+  std::shared_ptr<Object> p_object_;
 };
   
 }  // namespace spotify

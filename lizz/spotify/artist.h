@@ -11,12 +11,14 @@
 
 namespace lizz {
 namespace spotify {
+class Object;
 class Artist : public ArtistInterface {
  public:
   static constexpr const char* kTypeName = "artist";
   static constexpr const char* kPathInJson = "artists.items";
       
   Artist(const boost::property_tree::ptree& artist_info);
+  Artist(std::shared_ptr<Object> p_obj);
   
   // GetExternalUrls
   // GetFollowers
@@ -30,8 +32,7 @@ class Artist : public ArtistInterface {
   std::string GetUri(std::error_code& err) const;
 
  private:
-  boost::property_tree::ptree artist_info_;
-  
+  std::shared_ptr<Object> p_object_;
 };
 }  // namespace spotify
 }  // namespace lizz

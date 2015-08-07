@@ -13,12 +13,14 @@
 namespace lizz {
 class TrackInterface;
 namespace spotify {
+class Object;
 class Playlist : public PlaylistInterface {
  public:
   static constexpr const char* kTypeName = "playlist";
   static constexpr const char* kPathInJson = "playlists.items";
   
   Playlist(const boost::property_tree::ptree& playlist_info);
+  Playlist(std::shared_ptr<Object> p_obj);
   
   bool GetCollaborative(std::error_code& err) const;
   std::string GetDescription(std::error_code& err) const;
@@ -36,7 +38,7 @@ class Playlist : public PlaylistInterface {
   std::string GetUri(std::error_code& err) const;
   
  private:
-  boost::property_tree::ptree playlist_info_;
+  std::shared_ptr<Object> p_object_;
 };
 }  // namespace spotify
 }  // namespace lizz

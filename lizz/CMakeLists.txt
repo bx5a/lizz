@@ -20,6 +20,10 @@ AddTarget(
     spotify/client.h
     spotify/search_engine.cc
     spotify/search_engine.h
+
+    spotify/object.cc
+    spotify/object.h
+
     spotify/track.h
     spotify/track.cc
     spotify/album.h
