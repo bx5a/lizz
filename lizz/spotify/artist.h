@@ -1,9 +1,8 @@
 #ifndef LIZZ_SPOTIFY_ARTIST_H_
 #define LIZZ_SPOTIFY_ARTIST_H_
 
-#include <string>
-#include <list>
 #include <system_error>
+#include <memory>
 
 #include <boost/property_tree/ptree.hpp>
 

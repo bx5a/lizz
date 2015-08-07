@@ -7,9 +7,9 @@
 
 #include "spotify/search_engine.h"
 
-#include "common/log.h"
+#include "common/utils/log.h"
 #include "common/light_http_server.h"
-#include "common/string.h"
+#include "common/utils/string.h"
 
 namespace lizz {
 namespace spotify {
