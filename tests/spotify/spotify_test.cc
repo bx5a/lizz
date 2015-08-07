@@ -1,12 +1,14 @@
 #include "gtest/gtest.h"
 
+#include <list>
+
 #include <QDesktopServices>
 #include <QUrl>
 #include <QString>
 #include <QApplication>
 
 #include "spotify/client.h"
-#include "spotify/track.h"
+#include "spotify/object.h"
 #include "interfaces/search_engine_interface.h"
 
 // TODO(bx5a): Use boost::python and selenium to automate that test
@@ -119,34 +121,37 @@ TEST(SpotifyTest, Search) {
   }
 }
 
-TEST(SpotifyTest, Track) {
-  auto p_client = Login();
-  auto p_search_engine = p_client->GetSearchEngine();
-  auto result = p_search_engine->Run("The who", 1, 0, 0, 0);
-  result.Wait();
+TEST(SpotifyTest, Object) {
+  std::string json = R"test_json(
+  {
+    "some_int": 10,
+    "some_string": "some string",
+    "some_bool": true,
+    "int_list": [ 2, 142, 0 ],
+    "objects": [
+      {
+        "some_int": 10,
+        "some_string": "first string",
+        "some_bool": true
+      }, {
+        "some_int": 10,
+        "some_string": "second string",
+        "some_bool": true
+      }
+    ]
+  }
+  )test_json";
   
-  EXPECT_FALSE(result.GetError());
-  ASSERT_EQ(result.Get().GetTracks().size(), 1);
-  
-  std::shared_ptr<lizz::TrackInterface> track_ptr = *(result.Get().GetTracks().begin());
-  auto p_track = static_cast<lizz::spotify::Track*>(track_ptr.get());
-  
+  lizz::spotify::Object obj;
   std::error_code err;
+  obj.Init(json, err);
+  ASSERT_FALSE(err);
   
-  // Spotify specific
-  auto markets = p_track->GetAvailableMarkets(err);
-  EXPECT_EQ(markets.size(), 2);
-  EXPECT_EQ(*(markets.begin()), "DK");
-  EXPECT_FALSE(p_track->GetExplicit(err));
-  EXPECT_EQ(p_track->GetDiscNumber(err), 1);
-  EXPECT_EQ(p_track->GetHref(err), "https://api.spotify.com/v1/tracks/4jGEwDE6F6ERJ3BxAZ03sU");
-  EXPECT_EQ(p_track->GetId(err), "4jGEwDE6F6ERJ3BxAZ03sU");
-  EXPECT_EQ(p_track->GetPopularity(err), 0);
-  EXPECT_EQ(p_track->GetUri(err), "spotify:track:4jGEwDE6F6ERJ3BxAZ03sU");
+  ASSERT_EQ(obj.GetString("some_string", err), "some string");
+  ASSERT_EQ(obj.GetUInt8("some_int", err), 10);
+  ASSERT_EQ(obj.GetUInt16("some_int", err), 10);
+  ASSERT_TRUE(obj.GetBool("some_bool", err));
   
-  // global
-  EXPECT_EQ(track_ptr->GetTrackNumber(err), 105);
-  EXPECT_EQ(track_ptr->GetDuration(err), std::chrono::milliseconds(242186));
-  EXPECT_EQ(track_ptr->GetArtists(err).size(), 1);
-  EXPECT_EQ(track_ptr->GetName(err), "I Wanna Dance With Somebody (Who Loves Me) (Glee Cast Version)");
+  ASSERT_EQ(obj.GetStringList("int_list", err).size(), 3);
+  ASSERT_EQ((*std::begin(obj.GetObjectList("objects", err)))->GetString("some_string", err), "first string");
 }

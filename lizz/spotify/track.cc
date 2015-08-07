@@ -21,7 +21,6 @@ std::shared_ptr<AlbumInterface> Track::GetAlbum(std::error_code& err) const {
   return std::make_shared<Album>(p_object_);
 }
   
-  
 std::list<std::shared_ptr<ArtistInterface>>
     Track::GetArtists(std::error_code& err) const {
   std::list<std::shared_ptr<ArtistInterface>> ret;

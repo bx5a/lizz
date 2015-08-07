@@ -1,11 +1,21 @@
 #include "spotify/object.h"
 
+#include <sstream>
+
+#include <boost/property_tree/json_parser.hpp>
 
 namespace lizz {
 namespace spotify {
   
 void Object::Init(const std::string& json_info, std::error_code& err) {
-  err = std::make_error_code(std::errc::function_not_supported);
+  try {
+    std::stringstream ss;
+    ss << json_info;
+    boost::property_tree::read_json(ss, info_);
+  } catch(...) {
+    err = std::make_error_code(std::errc::bad_message);
+    return;
+  }
 }
 
 void Object::Init(const boost::property_tree::ptree& info) {

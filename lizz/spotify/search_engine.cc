@@ -82,6 +82,7 @@ web::http::http_request SearchEngine::MakeRequest(
     const std::string& query, const std::string& entry_type,
     uint16_t entry_number, const std::string& token_type,
     const std::string& token) const {
+  
   web::http::http_request request(web::http::methods::GET);
   request.headers().add("Authorization", token_type + " " + token);
   web::http::uri_builder search_uri("/v1/search");
