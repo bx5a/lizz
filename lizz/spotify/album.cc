@@ -4,8 +4,6 @@
 #include "spotify/track.h"
 #include "spotify/artist.h"
 
-#include "common/utils/property_tree.h"
-
 namespace lizz {
 namespace spotify {
   

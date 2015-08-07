@@ -1,7 +1,5 @@
 #include "spotify/object.h"
 #include "spotify/playlist.h"
-
-#include "common/utils/property_tree.h"
 #include "spotify/track.h"
 
 namespace lizz {
