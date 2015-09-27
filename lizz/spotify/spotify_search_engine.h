@@ -1,5 +1,5 @@
-#ifndef LIZZ_SPOTIFY_SEARCH_ENGINE_H_
-#define LIZZ_SPOTIFY_SEARCH_ENGINE_H_
+#ifndef LIZZ_SPOTIFY_SPOTIFY_SEARCH_ENGINE_H_
+#define LIZZ_SPOTIFY_SPOTIFY_SEARCH_ENGINE_H_
 
 #include <memory>
 #include <list>
@@ -9,14 +9,15 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 
-#include "interfaces/search_engine_interface.h"
+#include "interfaces/search_engine.h"
 
 namespace lizz {
 namespace spotify {
-class Client;
-class SearchEngine : public SearchEngineInterface {
+class SpotifyClient;
+class SpotifySearchEngine : public SearchEngine {
  public:
-  SearchEngine(std::shared_ptr<Client> p_spotify_client);
+  SpotifySearchEngine(std::shared_ptr<SpotifyClient> p_spotify_client);
+  // TODO(bxa): rename to Query ?
   Future<SearchResult> Run(const std::string& query,
                            uint16_t track_number,
                            uint16_t album_number,
@@ -30,6 +31,8 @@ class SearchEngine : public SearchEngineInterface {
                           uint16_t artist_number,
                           uint16_t playlist_number,
                           std::error_code& err);
+  
+  // TODO(bxa): Move private member to .cc file
   
   template <class T>
   std::list<std::shared_ptr<T>> Search(const std::string& query,
@@ -85,11 +88,11 @@ class SearchEngine : public SearchEngineInterface {
     }
   }
   
-  std::shared_ptr<Client> p_client_;
+  std::shared_ptr<SpotifyClient> p_client_;
   web::http::client::http_client rest_client_;
 };
   
 }  // namespace spotify
 }  // namespace lizz
 
-#endif  // LIZZ_SPOTIFY_SEARCH_ENGINE_H_
+#endif  // LIZZ_SPOTIFY_SPOTIFY_SEARCH_ENGINE_H_

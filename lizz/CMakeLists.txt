@@ -8,30 +8,31 @@ AddTarget(
 
   SOURCES
     # Interfaces
-    interfaces/client_interface.h
-    interfaces/search_engine_interface.h
-    interfaces/track_interface.h
-    interfaces/album_interface.h
-    interfaces/artist_interface.h
-    interfaces/playlist_interface.h
+    interfaces/client.h
+    interfaces/search_engine.h
+    interfaces/track.h
+    interfaces/album.h
+    interfaces/artist.h
+    interfaces/playlist.h
+    interfaces/fwd.h
 
     # Spotify
-    spotify/client.cc
-    spotify/client.h
-    spotify/search_engine.cc
-    spotify/search_engine.h
+    spotify/spotify_client.cc
+    spotify/spotify_client.h
+    spotify/spotify_search_engine.cc
+    spotify/spotify_search_engine.h
 
-    spotify/object.cc
-    spotify/object.h
+    spotify/spotify_object.cc
+    spotify/spotify_object.h
 
-    spotify/track.h
-    spotify/track.cc
-    spotify/album.h
-    spotify/album.cc
-    spotify/artist.h
-    spotify/artist.cc
-    spotify/playlist.h
-    spotify/playlist.cc
+    spotify/spotify_track.h
+    spotify/spotify_track.cc
+    spotify/spotify_album.h
+    spotify/spotify_album.cc
+    spotify/spotify_artist.h
+    spotify/spotify_artist.cc
+    spotify/spotify_playlist.h
+    spotify/spotify_playlist.cc
 
     # Common
     common/search_result.cc

@@ -1,23 +1,23 @@
-#ifndef LIZZ_SPOTIFY_ARTIST_H_
-#define LIZZ_SPOTIFY_ARTIST_H_
+#ifndef LIZZ_SPOTIFY_SPOTIFY_ARTIST_H_
+#define LIZZ_SPOTIFY_SPOTIFY_ARTIST_H_
 
 #include <system_error>
 #include <memory>
 
 #include <boost/property_tree/ptree.hpp>
 
-#include "interfaces/artist_interface.h"
+#include "interfaces/artist.h"
 
 namespace lizz {
 namespace spotify {
-class Object;
-class Artist : public ArtistInterface {
+class SpotifyObject;
+class SpotifyArtist : public Artist {
  public:
   static constexpr const char* kTypeName = "artist";
   static constexpr const char* kPathInJson = "artists.items";
       
-  Artist(const boost::property_tree::ptree& artist_info);
-  Artist(std::shared_ptr<Object> p_obj);
+  SpotifyArtist(const boost::property_tree::ptree& artist_info);
+  SpotifyArtist(std::shared_ptr<SpotifyObject> p_obj);
   
   // GetExternalUrls
   // GetFollowers
@@ -31,9 +31,9 @@ class Artist : public ArtistInterface {
   std::string GetUri(std::error_code& err) const;
 
  private:
-  std::shared_ptr<Object> p_object_;
+  std::shared_ptr<SpotifyObject> p_object_;
 };
 }  // namespace spotify
 }  // namespace lizz
 
-#endif  // LIZZ_SPOTIFY_ARTIST_H_
+#endif  // LIZZ_SPOTIFY_SPOTIFY_ARTIST_H_

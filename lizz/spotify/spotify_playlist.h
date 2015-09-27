@@ -1,5 +1,5 @@
-#ifndef LIZZ_SPOTIFY_PLAYLIST_H_
-#define LIZZ_SPOTIFY_PLAYLIST_H_
+#ifndef LIZZ_SPOTIFY_SPOTIFY_PLAYLIST_H_
+#define LIZZ_SPOTIFY_SPOTIFY_PLAYLIST_H_
 
 #include <memory>
 #include <system_error>
@@ -8,19 +8,19 @@
 
 #include <boost/property_tree/ptree.hpp>
 
-#include "interfaces/playlist_interface.h"
+#include "interfaces/playlist.h"
 
 namespace lizz {
-class TrackInterface;
+class Track;
 namespace spotify {
-class Object;
-class Playlist : public PlaylistInterface {
+class SpotifyObject;
+class SpotifyPlaylist : public Playlist {
  public:
   static constexpr const char* kTypeName = "playlist";
   static constexpr const char* kPathInJson = "playlists.items";
   
-  Playlist(const boost::property_tree::ptree& playlist_info);
-  Playlist(std::shared_ptr<Object> p_obj);
+  SpotifyPlaylist(const boost::property_tree::ptree& playlist_info);
+  SpotifyPlaylist(std::shared_ptr<SpotifyObject> p_obj);
   
   bool GetCollaborative(std::error_code& err) const;
   std::string GetDescription(std::error_code& err) const;
@@ -33,14 +33,14 @@ class Playlist : public PlaylistInterface {
   // GetOwner
   bool GetPublic(std::error_code& err) const;
   std::string GetSnapshotId(std::error_code& err) const;
-  std::list<std::shared_ptr<TrackInterface>> GetTracks(std::error_code& err) const;
+  std::list<std::shared_ptr<Track>> GetTracks(std::error_code& err) const;
   std::string GetType(std::error_code& err) const;
   std::string GetUri(std::error_code& err) const;
   
  private:
-  std::shared_ptr<Object> p_object_;
+  std::shared_ptr<SpotifyObject> p_object_;
 };
 }  // namespace spotify
 }  // namespace lizz
 
-#endif  // LIZZ_SPOTIFY_PLAYLIST_H_
+#endif  // LIZZ_SPOTIFY_SPOTIFY_PLAYLIST_H_

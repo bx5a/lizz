@@ -1,5 +1,5 @@
-#ifndef LIZZ_SPOTIFY_CLIENT_H_
-#define LIZZ_SPOTIFY_CLIENT_H_
+#ifndef LIZZ_SPOTIFY_SPOTIFY_CLIENT_H_
+#define LIZZ_SPOTIFY_SPOTIFY_CLIENT_H_
 
 #include <string>
 #include <memory>
@@ -7,12 +7,12 @@
 #include <cstdint>
 #include <functional>
 
-#include "interfaces/client_interface.h"
+#include "interfaces/client.h"
 
 namespace lizz {
 namespace spotify {
   
-class Client : public ClientInterface, public std::enable_shared_from_this<Client> {
+class SpotifyClient : public Client, public std::enable_shared_from_this<SpotifyClient> {
  public:
   /**
    * login handler
@@ -42,7 +42,7 @@ class Client : public ClientInterface, public std::enable_shared_from_this<Clien
       std::function<std::string(const std::error_code& error)>;
   
   
-  Client(std::string client_id,
+  SpotifyClient(std::string client_id,
          std::string client_secret,
          uint16_t redirect_uri_port);
   
@@ -56,7 +56,7 @@ class Client : public ClientInterface, public std::enable_shared_from_this<Clien
              uint16_t timeout_seconds,
              std::error_code& err);
   
-  std::shared_ptr<SearchEngineInterface> GetSearchEngine();
+  std::shared_ptr<SearchEngine> GetSearchEngine();
   
   void QueryAccessToken(std::string* p_token_type,
                         std::string* p_access_token,
@@ -71,4 +71,4 @@ class Client : public ClientInterface, public std::enable_shared_from_this<Clien
 }  // namespace spotify
 }  // namespace lizz
 
-#endif  // LIZZ_SPOTIFY_CLIENT_H_
+#endif  // LIZZ_SPOTIFY_SPOTIFY_CLIENT_H_

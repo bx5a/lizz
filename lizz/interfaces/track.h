@@ -1,5 +1,5 @@
-#ifndef LIZZ_TRACK_INTERFACE_H_
-#define LIZZ_TRACK_INTERFACE_H_
+#ifndef LIZZ_TRACK_H_
+#define LIZZ_TRACK_H_
 
 #include <string>
 #include <system_error>
@@ -8,14 +8,14 @@
 #include <list>
 
 namespace lizz {
-class AlbumInterface;
-class ArtistInterface;
+class Album;
+class Artist;
 
-class TrackInterface {
+class Track {
  public:
-  virtual std::shared_ptr<AlbumInterface>
+  virtual std::shared_ptr<Album>
       GetAlbum(std::error_code& err) const = 0;
-  virtual std::list<std::shared_ptr<ArtistInterface>>
+  virtual std::list<std::shared_ptr<Artist>>
       GetArtists(std::error_code& err) const = 0;
   virtual std::string GetName(std::error_code& err) const = 0;
   virtual std::chrono::milliseconds GetDuration(std::error_code& err) const = 0;
@@ -24,4 +24,4 @@ class TrackInterface {
   
 }  // namespace lizz
 
-#endif  // LIZZ_TRACK_INTERFACE_H_
+#endif  // LIZZ_TRACK_H_

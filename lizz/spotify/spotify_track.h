@@ -1,27 +1,27 @@
-#ifndef LIZZ_SPOTIFY_TRACK_H_
-#define LIZZ_SPOTIFY_TRACK_H_
+#ifndef LIZZ_SPOTIFY_SPOTIFY_TRACK_H_
+#define LIZZ_SPOTIFY_SPOTIFY_TRACK_H_
 
 #include <boost/property_tree/ptree.hpp>
 
-#include "interfaces/track_interface.h"
+#include "interfaces/track.h"
 
 // Interface obtained from
 // https://developer.spotify.com/web-api/object-model/
 namespace lizz {
-class AlbumInterface;
-class ArtistInterface;
+class Album;
+class Artist;
 namespace spotify {
-class Object;
-class Track : public TrackInterface {
+class SpotifyObject;
+class SpotifyTrack : public Track {
  public:
   static constexpr const char* kTypeName = "track";
   static constexpr const char* kPathInJson = "tracks.items";
   
-  Track(const boost::property_tree::ptree& track_info);
-  Track(std::shared_ptr<Object> p_obj);
+  SpotifyTrack(const boost::property_tree::ptree& track_info);
+  SpotifyTrack(std::shared_ptr<SpotifyObject> p_obj);
   
-  std::shared_ptr<AlbumInterface> GetAlbum(std::error_code& err) const;
-  std::list<std::shared_ptr<ArtistInterface>>
+  std::shared_ptr<Album> GetAlbum(std::error_code& err) const;
+  std::list<std::shared_ptr<Artist>>
       GetArtists(std::error_code& err) const;
   std::list<std::string> GetAvailableMarkets(std::error_code& err) const;
   uint8_t GetDiscNumber(std::error_code& err) const;
@@ -40,9 +40,9 @@ class Track : public TrackInterface {
   std::string GetUri(std::error_code& err) const;
 
 private:
-  std::shared_ptr<Object> p_object_;
+  std::shared_ptr<SpotifyObject> p_object_;
 };
 }  // namespace spotify
 }  // namespace lizz
 
-#endif  // LIZZ_SPOTIFY_TRACK_H_
+#endif  // LIZZ_SPOTIFY_SPOTIFY_TRACK_H_

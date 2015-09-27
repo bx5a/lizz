@@ -1,5 +1,5 @@
-#ifndef LIZZ_SPOTIFY_OBJECT_H_
-#define LIZZ_SPOTIFY_OBJECT_H_
+#ifndef LIZZ_SPOTIFY_SPOTIFY_OBJECT_H_
+#define LIZZ_SPOTIFY_SPOTIFY_OBJECT_H_
 
 #include <system_error>
 #include <cstdint>
@@ -12,7 +12,7 @@
 namespace lizz {
 namespace spotify {
   
-class Object {
+class SpotifyObject {
  public:
   void Init(const std::string& json_info, std::error_code& err);
   void Init(const boost::property_tree::ptree& info);
@@ -26,9 +26,9 @@ class Object {
   uint8_t GetUInt8(const std::string& path, std::error_code& err) const;
   uint16_t GetUInt16(const std::string& path, std::error_code& err) const;
   
-  std::shared_ptr<Object> GetObject(const std::string& path,
+  std::shared_ptr<SpotifyObject> GetObject(const std::string& path,
                                     std::error_code& err) const;
-  std::list<std::shared_ptr<Object>>
+  std::list<std::shared_ptr<SpotifyObject>>
       GetObjectList(const std::string& path,
                     std::error_code& err) const;
 
@@ -40,4 +40,4 @@ class Object {
 }  // namespace spotify
 }  // namespace lizz
 
-#endif  // LIZZ_SPOTIFY_OBJECT_H_
+#endif  // LIZZ_SPOTIFY_SPOTIFY_OBJECT_H_

@@ -1,23 +1,23 @@
-#include "spotify/search_engine.h"
+#include "spotify/spotify_search_engine.h"
 
 #include "common/utils/log.h"
 #include "common/future/utils.h"
 
-#include "spotify/client.h"
-#include "spotify/track.h"
-#include "spotify/album.h"
-#include "spotify/artist.h"
-#include "spotify/playlist.h"
+#include "spotify/spotify_client.h"
+#include "spotify/spotify_track.h"
+#include "spotify/spotify_album.h"
+#include "spotify/spotify_artist.h"
+#include "spotify/spotify_playlist.h"
 
 namespace lizz {
 namespace spotify {
   
-SearchEngine::SearchEngine(std::shared_ptr<Client> p_spotify_client) :
+SpotifySearchEngine::SpotifySearchEngine(std::shared_ptr<SpotifyClient> p_spotify_client) :
     p_client_(p_spotify_client),
     rest_client_("https://api.spotify.com")
   {}
 
-Future<SearchResult> SearchEngine::Run(const std::string& query,
+Future<SearchResult> SpotifySearchEngine::Run(const std::string& query,
                                        uint16_t track_number,
                                        uint16_t album_number,
                                        uint16_t artist_number,
@@ -39,7 +39,7 @@ Future<SearchResult> SearchEngine::Run(const std::string& query,
   return make_std_future<SearchResult>(fn);
 }
   
-SearchResult SearchEngine::PrivateRun(const std::string& query,
+SearchResult SpotifySearchEngine::PrivateRun(const std::string& query,
                                       uint16_t track_number,
                                       uint16_t album_number,
                                       uint16_t artist_number,
@@ -52,25 +52,25 @@ SearchResult SearchEngine::PrivateRun(const std::string& query,
   }
   SearchResult sr;
   if (track_number > 0) {
-    auto tracks = Search<Track>(query, track_number, type, token, err);
+    auto tracks = Search<SpotifyTrack>(query, track_number, type, token, err);
     for (const auto& track: tracks) {
       sr.Add(track);
     }
   }
   if (album_number > 0) {
-    auto albums = Search<Album>(query, album_number, type, token, err);
+    auto albums = Search<SpotifyAlbum>(query, album_number, type, token, err);
     for (const auto& album : albums) {
       sr.Add(album);
     }
   }
   if (artist_number > 0) {
-    auto artists = Search<Artist>(query, artist_number, type, token, err);
+    auto artists = Search<SpotifyArtist>(query, artist_number, type, token, err);
     for (const auto& artist : artists) {
       sr.Add(artist);
     }
   }
   if (playlist_number > 0) {
-    auto playlists = Search<Playlist>(query, playlist_number, type, token, err);
+    auto playlists = Search<SpotifyPlaylist>(query, playlist_number, type, token, err);
     for (const auto& playlist : playlists) {
       sr.Add(playlist);
     }
@@ -78,7 +78,7 @@ SearchResult SearchEngine::PrivateRun(const std::string& query,
   return sr;
 }
   
-web::http::http_request SearchEngine::MakeRequest(
+web::http::http_request SpotifySearchEngine::MakeRequest(
     const std::string& query, const std::string& entry_type,
     uint16_t entry_number, const std::string& token_type,
     const std::string& token) const {

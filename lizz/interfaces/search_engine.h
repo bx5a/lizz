@@ -1,5 +1,5 @@
-#ifndef LIZZ_SEARCH_ENGINE_INTERFACE_H_
-#define LIZZ_SEARCH_ENGINE_INTERFACE_H_
+#ifndef LIZZ_SEARCH_ENGINE_H_
+#define LIZZ_SEARCH_ENGINE_H_
 
 #include <future>
 #include <cstdint>
@@ -10,7 +10,7 @@
 
 namespace lizz {
   
-class SearchEngineInterface {
+class SearchEngine {
  public:
   virtual Future<SearchResult> Run(const std::string& query,
                                    uint16_t track_number,
@@ -21,4 +21,4 @@ class SearchEngineInterface {
   
 }  // namespace lizz
 
-#endif  // LIZZ_SEARCH_ENGINE_INTERFACE_H_
+#endif  // LIZZ_SEARCH_ENGINE_H_

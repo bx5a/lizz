@@ -1,11 +1,11 @@
-#include "spotify/client.h"
+#include "spotify/spotify_client.h"
 
 #include <thread>
 #include <regex>
 
 #include <cpprest/http_client.h>
 
-#include "spotify/search_engine.h"
+#include "spotify/spotify_search_engine.h"
 
 #include "common/utils/log.h"
 #include "common/light_http_server.h"
@@ -14,7 +14,7 @@
 namespace lizz {
 namespace spotify {
 
-Client::Client(std::string client_id,
+SpotifyClient::SpotifyClient(std::string client_id,
                std::string client_secret,
                uint16_t redirect_uri_port):
   client_id_(std::move(client_id)),
@@ -22,7 +22,7 @@ Client::Client(std::string client_id,
   redirect_uri_port_(std::move(redirect_uri_port)),
   refresh_token_("") {}
   
-void Client::Login(LoginHandler login_handler,
+void SpotifyClient::Login(LoginHandler login_handler,
                    LoginCompletionHandler completion_handler,
                    uint16_t timeout_seconds,
                    std::error_code& err) {
@@ -105,7 +105,7 @@ void Client::Login(LoginHandler login_handler,
   }
 }
   
-void Client::QueryAccessToken(std::string* p_token_type,
+void SpotifyClient::QueryAccessToken(std::string* p_token_type,
                               std::string* p_access_token,
                               std::error_code &err) {
   web::json::value access_token_json;
@@ -165,8 +165,8 @@ void Client::QueryAccessToken(std::string* p_token_type,
   }
 }
   
-std::shared_ptr<SearchEngineInterface> Client::GetSearchEngine() {
-  return std::make_shared<spotify::SearchEngine>(shared_from_this());
+std::shared_ptr<SearchEngine> SpotifyClient::GetSearchEngine() {
+  return std::make_shared<spotify::SpotifySearchEngine>(shared_from_this());
 }
   
 }  // namespace spotify
