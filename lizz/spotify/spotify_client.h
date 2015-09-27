@@ -10,7 +10,7 @@
 #include "interfaces/client.h"
 
 namespace lizz {
-namespace spotify {
+  
   
 class SpotifyClient : public Client, public std::enable_shared_from_this<SpotifyClient> {
  public:
@@ -68,7 +68,6 @@ class SpotifyClient : public Client, public std::enable_shared_from_this<Spotify
   std::string refresh_token_;
 };
   
-}  // namespace spotify
 }  // namespace lizz
 
 #endif  // LIZZ_SPOTIFY_SPOTIFY_CLIENT_H_

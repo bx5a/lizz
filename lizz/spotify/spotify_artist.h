@@ -9,7 +9,7 @@
 #include "interfaces/artist.h"
 
 namespace lizz {
-namespace spotify {
+  
 class SpotifyObject;
 class SpotifyArtist : public Artist {
  public:
@@ -33,7 +33,6 @@ class SpotifyArtist : public Artist {
  private:
   std::shared_ptr<SpotifyObject> p_object_;
 };
-}  // namespace spotify
 }  // namespace lizz
 
 #endif  // LIZZ_SPOTIFY_SPOTIFY_ARTIST_H_

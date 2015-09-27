@@ -12,7 +12,6 @@
 #include "interfaces/search_engine.h"
 
 namespace lizz {
-namespace spotify {
 class SpotifyClient;
 class SpotifySearchEngine : public SearchEngine {
  public:
@@ -92,7 +91,6 @@ class SpotifySearchEngine : public SearchEngine {
   web::http::client::http_client rest_client_;
 };
   
-}  // namespace spotify
 }  // namespace lizz
 
 #endif  // LIZZ_SPOTIFY_SPOTIFY_SEARCH_ENGINE_H_

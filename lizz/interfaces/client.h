@@ -3,12 +3,14 @@
 
 #include <memory>
 
+#include "interfaces/fwd.h"
+
 namespace lizz {
 class SearchEngine;
 
 class Client {
  public:
-  virtual std::shared_ptr<SearchEngine> GetSearchEngine() = 0;
+  virtual SearchEnginePtr GetSearchEngine() = 0;
 };
  
 }  // namespace lizz

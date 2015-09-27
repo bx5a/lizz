@@ -10,7 +10,6 @@
 #include "spotify/spotify_playlist.h"
 
 namespace lizz {
-namespace spotify {
   
 SpotifySearchEngine::SpotifySearchEngine(std::shared_ptr<SpotifyClient> p_spotify_client) :
     p_client_(p_spotify_client),
@@ -93,5 +92,4 @@ web::http::http_request SpotifySearchEngine::MakeRequest(
   return request;
 }
   
-}  // namespace spotify
 }  // namespace lizz

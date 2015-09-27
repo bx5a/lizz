@@ -9,7 +9,7 @@
 #include "interfaces/album.h"
 
 namespace lizz {
-namespace spotify {
+  
 class SpotifyObject;
   
 class SpotifyAlbum : public Album {
@@ -43,7 +43,7 @@ class SpotifyAlbum : public Album {
   std::shared_ptr<SpotifyObject> p_object_;
 };
   
-}  // namespace spotify
+  
 }  // namespace lizz
 
 #endif  // LIZZ_SPOTIFY_SPOTIFY_ALBUM_H_

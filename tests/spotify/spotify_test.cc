@@ -13,7 +13,7 @@
 
 // TODO(bx5a): Use boost::python and selenium to automate that test
 
-std::shared_ptr<lizz::spotify::SpotifyClient> Login() {
+std::shared_ptr<lizz::SpotifyClient> Login() {
   //Init Qt application
   int argc = 0;
   char** argv = nullptr;
@@ -23,7 +23,7 @@ std::shared_ptr<lizz::spotify::SpotifyClient> Login() {
   uint16_t redirect_uri_port;
   std::stringstream ss(SPOTIFY_REDIRECT_URI_PORT);
   ss >> redirect_uri_port;
-  auto p_client = std::make_shared<lizz::spotify::SpotifyClient>(SPOTIFY_CLIENT_ID,
+  auto p_client = std::make_shared<lizz::SpotifyClient>(SPOTIFY_CLIENT_ID,
                                                           SPOTIFY_CLIENT_SECRET,
                                                           redirect_uri_port);
   
@@ -60,15 +60,15 @@ TEST(SpotifyTest, Login) {
   auto p_client = Login();
   std::string type, token;
   std::error_code err;
-  static_cast<lizz::spotify::SpotifyClient*>(p_client.get())->QueryAccessToken(&type,
+  static_cast<lizz::SpotifyClient*>(p_client.get())->QueryAccessToken(&type,
                                                                         &token,
                                                                         err);
   ASSERT_FALSE(err);
-  static_cast<lizz::spotify::SpotifyClient*>(p_client.get())->QueryAccessToken(&type,
+  static_cast<lizz::SpotifyClient*>(p_client.get())->QueryAccessToken(&type,
                                                                         &token,
                                                                         err);
   ASSERT_FALSE(err);
-  static_cast<lizz::spotify::SpotifyClient*>(p_client.get())->QueryAccessToken(&type,
+  static_cast<lizz::SpotifyClient*>(p_client.get())->QueryAccessToken(&type,
                                                                         &token,
                                                                         err);
   ASSERT_FALSE(err);
@@ -142,7 +142,7 @@ TEST(SpotifyTest, Object) {
   }
   )test_json";
   
-  lizz::spotify::SpotifyObject obj;
+  lizz::SpotifyObject obj;
   std::error_code err;
   obj.Init(json, err);
   ASSERT_FALSE(err);

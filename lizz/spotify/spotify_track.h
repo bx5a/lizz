@@ -10,7 +10,6 @@
 namespace lizz {
 class Album;
 class Artist;
-namespace spotify {
 class SpotifyObject;
 class SpotifyTrack : public Track {
  public:
@@ -42,7 +41,6 @@ class SpotifyTrack : public Track {
 private:
   std::shared_ptr<SpotifyObject> p_object_;
 };
-}  // namespace spotify
 }  // namespace lizz
 
 #endif  // LIZZ_SPOTIFY_SPOTIFY_TRACK_H_

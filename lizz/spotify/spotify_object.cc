@@ -5,7 +5,7 @@
 #include <boost/property_tree/json_parser.hpp>
 
 namespace lizz {
-namespace spotify {
+  
   
 void SpotifyObject::Init(const std::string& json_info, std::error_code& err) {
   try {
@@ -108,5 +108,4 @@ std::list<std::shared_ptr<SpotifyObject>>
 }
  
   
-}  // namespace spotify
 }  // namespace lizz

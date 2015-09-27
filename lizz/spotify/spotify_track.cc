@@ -7,7 +7,6 @@
 #include "interfaces/artist.h"
 
 namespace lizz {
-namespace spotify {
   
 SpotifyTrack::SpotifyTrack(const boost::property_tree::ptree& track_info)
     : p_object_(std::make_shared<SpotifyObject>()) {
@@ -75,5 +74,4 @@ std::string SpotifyTrack::GetUri(std::error_code& err) const {
   return p_object_->GetString("uri", err);
 }
 
-}  // namespace spotify
 }  // namespace lizz

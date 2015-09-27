@@ -12,7 +12,7 @@
 
 namespace lizz {
 class Track;
-namespace spotify {
+  
 class SpotifyObject;
 class SpotifyPlaylist : public Playlist {
  public:
@@ -40,7 +40,7 @@ class SpotifyPlaylist : public Playlist {
  private:
   std::shared_ptr<SpotifyObject> p_object_;
 };
-}  // namespace spotify
+  
 }  // namespace lizz
 
 #endif  // LIZZ_SPOTIFY_SPOTIFY_PLAYLIST_H_

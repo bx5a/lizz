@@ -3,7 +3,7 @@
 #include "spotify/spotify_track.h"
 
 namespace lizz {
-namespace spotify {
+  
 SpotifyPlaylist::SpotifyPlaylist(const boost::property_tree::ptree& playlist_info) :
     p_object_(std::make_shared<SpotifyObject>()) {
   p_object_->Init(playlist_info);
@@ -55,6 +55,4 @@ std::string SpotifyPlaylist::GetUri(std::error_code& err) const {
 }
 
 
-
-}  // namespace spotify
 }  // namespace lizz

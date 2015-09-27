@@ -10,7 +10,7 @@
 // TODO(bx5a): should inherit a common class. Spotify special: when error
 // first try to query complete object before returning
 namespace lizz {
-namespace spotify {
+  
   
 class SpotifyObject {
  public:
@@ -36,8 +36,7 @@ class SpotifyObject {
  private:
   boost::property_tree::ptree info_;
 };
-    
-}  // namespace spotify
+  
 }  // namespace lizz
 
 #endif  // LIZZ_SPOTIFY_SPOTIFY_OBJECT_H_

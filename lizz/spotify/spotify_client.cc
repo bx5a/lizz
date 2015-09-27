@@ -12,7 +12,6 @@
 #include "common/utils/string.h"
 
 namespace lizz {
-namespace spotify {
 
 SpotifyClient::SpotifyClient(std::string client_id,
                std::string client_secret,
@@ -166,8 +165,7 @@ void SpotifyClient::QueryAccessToken(std::string* p_token_type,
 }
   
 std::shared_ptr<SearchEngine> SpotifyClient::GetSearchEngine() {
-  return std::make_shared<spotify::SpotifySearchEngine>(shared_from_this());
+  return std::make_shared<SpotifySearchEngine>(shared_from_this());
 }
   
-}  // namespace spotify
 }  // namespace lizz

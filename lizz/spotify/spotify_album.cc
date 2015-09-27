@@ -5,7 +5,6 @@
 #include "spotify/spotify_artist.h"
 
 namespace lizz {
-namespace spotify {
   
 SpotifyAlbum::SpotifyAlbum(const boost::property_tree::ptree& album_info) :
     p_object_(std::make_shared<SpotifyObject>()) {
@@ -83,5 +82,4 @@ std::string SpotifyAlbum::GetUri(std::error_code& err) const {
   return p_object_->GetString("uri", err);
 }
   
-}  // namespace spotify
 }  // namespace lizz
